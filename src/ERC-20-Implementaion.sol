@@ -37,5 +37,19 @@ contract ERC20Implementation {
         Balances[owner] = tinitialSupply;
         emit Transfer(address(0), owner, tinitialSupply);
     }
-   
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not the owner");
+        _;
+    }
+
+    function name() public view returns (string memory) {
+        return tokenName;
+    }
+    function symbol() public view returns (string memory) {
+        return tokenShortName;
+    }
+
+    function decimals() public view returns (uint8) {
+        return tokenDecimals;
+    }
 }
