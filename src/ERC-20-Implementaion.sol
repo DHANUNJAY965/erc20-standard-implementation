@@ -52,4 +52,21 @@ contract ERC20Implementation {
     function decimals() public view returns (uint8) {
         return tokenDecimals;
     }
+    function totalSupply() public view returns (uint256) {
+        return totalSupplyrunning;
+    }
+
+     function balanceOf(address add) public view returns (uint256 balance) {
+        require(add != address(0), "Cannot find balance of zero address");
+        return Balances[add];
+    }
+
+    function transfer(address to, uint256 amount) public returns (bool) {
+        require(to != address(0), "No transfers to zero address");
+        require(Balances[msg.sender] >= amount, "Balance is insufficient");
+        Balances[msg.sender] -= amount;
+        Balances[to] += amount;
+        emit Transfer(msg.sender, to, amount);
+        return true;
+    }
 }
