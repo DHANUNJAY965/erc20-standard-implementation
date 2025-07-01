@@ -69,4 +69,29 @@ contract ERC20Implementation {
         emit Transfer(msg.sender, to, amount);
         return true;
     }
+
+     function mint(address to, uint256 amount) public onlyOwner returns (bool) {
+        require(msg.sender == owner, "Only owner can mint");
+        Balances[to] += amount;
+        totalSupplyrunning += amount;
+        emit Transfer(address(0), msg.sender, amount);
+        return true;
+    }
+
+    function burn(uint256 amount) public onlyOwner returns (bool) {
+        require(Balances[msg.sender] >= amount, "Insufficient balance to burn");
+        Balances[msg.sender] -= amount;
+        totalSupplyrunning -= amount;
+        emit Transfer(msg.sender, address(0), amount);
+        return true;
+    }
+
+    function allowance(
+        address from,
+        address beneficiary
+    ) public view returns (uint256 remaining) {
+        require(from != address(0), "No allowance to zero address");
+        require(beneficiary != address(0), "No allowance to zero address");
+        return allowanceamount[from][beneficiary];
+    }
 }

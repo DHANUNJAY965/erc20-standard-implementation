@@ -38,4 +38,32 @@ contract Erc20 is Test {
         assertEq(token.Balances(address(this)), 900);
         assertEq(token.totalSupplyrunning(), 1000);
     }
+
+    function testMint() public {
+        console.log("Initial total supply: ", token.totalSupplyrunning());
+        console.log("Contract address : ", address(this));
+        console.log(
+            "Initial balance of contract: ",
+            token.Balances(token.owner())
+        );
+        assertEq(token.Balances(token.owner()), 1000);
+        token.mint(address(this), 500);
+        assertEq(token.totalSupplyrunning(), 1500);
+        assertEq(token.Balances(token.owner()), 1500);
+    }
+
+    function testBurn() public {
+        console.log("Initial total supply: ", token.totalSupplyrunning());
+        console.log("Contract address : ", address(this));
+        console.log(
+            "Initial balance of contract: ",
+            token.Balances(token.owner())
+        );
+        assertEq(token.Balances(token.owner()), 1000);
+        token.burn(500);
+        assertEq(token.totalSupplyrunning(), 500);
+        assertEq(token.Balances(token.owner()), 500);
+    }
+
+    
 }
