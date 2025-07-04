@@ -65,5 +65,71 @@ contract Erc20 is Test {
         assertEq(token.Balances(token.owner()), 500);
     }
 
+    function testApprove() public {
+        uint256 amount = 2000;
+        bool issuccesstoken = token.approve(
+            0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF,
+            amount
+        );
+        assertTrue(issuccesstoken, "approve function did not return true");
+        assertEq(
+            token.allowance(
+                token.owner(),
+                0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF
+            ),
+            amount,
+            "allowance is not equal to amount"
+        );
+    }
+
+    
+     function testTransferFrom() public {
+        address owner = address(this);
+        bool isapprovesuccess = token.approve(
+            0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF,
+            500
+        );
+        assertTrue(isapprovesuccess, "approve function did not return true");
+        vm.startPrank(0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF);
+        bool istransferfromsuccess = token.transferFrom(
+            owner,
+            0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97,
+            200
+        );
+        assertTrue(
+            istransferfromsuccess,
+            "transferFrom function did not return true"
+        );
+        assertEq(
+            token.allowance(owner, 0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF),
+            300,
+            "allowance is not equal to amount"
+        );
+        assertEq(token.Balances(owner), 800, "balance is not equal to amount");
+        assertEq(
+            token.Balances(0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97),
+            200,
+            "balance is not equal to amount"
+        );
+        vm.stopPrank();
+    }
+
+
+    function testAllowancebalance() public {
+        bool issuccesstoken = token.approve(
+            0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF,
+            500
+        );
+        assertTrue(issuccesstoken, "approve function did not return true");
+        assertEq(
+            token.allowance(
+                address(this),
+                0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF
+            ),
+            500,
+            "allowance is not equal to amount"
+        );
+    }
+
     
 }

@@ -94,4 +94,34 @@ contract ERC20Implementation {
         require(beneficiary != address(0), "No allowance to zero address");
         return allowanceamount[from][beneficiary];
     }
+
+     function approve(
+        address beneficiary,
+        uint256 amount
+    ) public returns (bool success) {
+        require(beneficiary != address(0), "No transfers to zero address");
+        allowanceamount[msg.sender][beneficiary] = amount;
+        emit Approval(msg.sender, beneficiary, amount);
+        return true;
+    }
+
+    function transferFrom(
+        address from,
+        address to,
+        uint256 amount
+    ) public returns (bool success) {
+        require(to != address(0), "No transfers to zero address");
+        uint256 currentAllowance = allowanceamount[from][msg.sender];
+        require(currentAllowance >= amount, "Allowance is insufficient");
+        allowanceamount[from][msg.sender] = currentAllowance - amount;
+        Balances[from] -= amount;
+        Balances[to] += amount;
+        emit Transfer(from, to, amount);
+        return true;
+    }
+    function setDecimals(uint8 tdecimals) public {
+        require(!decimalsSet, "Decimals already set");
+        tokenDecimals = tdecimals;
+        decimalsSet = true;
+    }
 }
