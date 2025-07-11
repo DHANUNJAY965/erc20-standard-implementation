@@ -124,4 +124,36 @@ contract ERC20Implementation {
         tokenDecimals = tdecimals;
         decimalsSet = true;
     }
+
+     function allowanceincrease(
+        address beneficiary,
+        uint256 amount
+    ) public returns (bool) {
+        require(beneficiary != address(0), "No transfers to zero address");
+        allowanceamount[msg.sender][beneficiary] += amount;
+        emit Approval(
+            msg.sender,
+            beneficiary,
+            allowanceamount[msg.sender][beneficiary]
+        );
+        return true;
+    }
+
+    function allowancedecrease(
+        address beneficiary,
+        uint256 amount
+    ) public returns (bool) {
+        require(beneficiary != address(0), "No transfers to zero address");
+        require(
+            allowanceamount[msg.sender][beneficiary] >= amount,
+            "Insufficient allowance to decrease"
+        );
+        allowanceamount[msg.sender][beneficiary] -= amount;
+        emit Approval(
+            msg.sender,
+            beneficiary,
+            allowanceamount[msg.sender][beneficiary]
+        );
+        return true;
+    }
 }

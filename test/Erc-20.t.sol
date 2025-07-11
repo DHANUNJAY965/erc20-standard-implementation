@@ -131,5 +131,52 @@ contract Erc20 is Test {
         );
     }
 
+      function testAllowanceIncrease() public {
+       bool isSuccess = token.approve(
+            0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF,
+            500
+        );
+        assertTrue(isSuccess, "approve function did not return true");
+        uint256 initialAllowance = token.allowance(
+            address(this),
+            0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF
+        );
+        token.allowanceincrease(
+            0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF,
+            200
+        );
+        assertEq(
+            token.allowance(
+                address(this),
+                0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF
+            ),
+            initialAllowance + 200,
+            "allowance not credited"
+        );
+    }
+    function testAllowanceDecrease() public {
+        bool isSuccess = token.approve(
+            0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF,
+            500
+        );
+        assertTrue(isSuccess, "approve function did not return true");
+        uint256 initialAllowance = token.allowance(
+            address(this),
+            0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF
+        );
+        token.allowancedecrease(
+            0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF,
+            200
+        );
+        assertEq(
+            token.allowance(
+                address(this),
+                0xA68A8adC1F6AB80010fa3189908E908C8F1a40bF
+            ),
+            initialAllowance - 200,
+            "allowance not debited"
+        );
+    }
+
     
 }
